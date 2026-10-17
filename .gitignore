@@ -1,0 +1,11 @@
+# Dependencies
+node_modules/
+
+# Production build outputs (large binaries are released via GitHub Releases)
+dist/
+dist-electron/
+
+# Environment and logs
+*.log
+.DS_Store
+Thumbs.db

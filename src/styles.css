@@ -1,0 +1,206 @@
+/* ── Reset & Base ────────────────────────────────────────── */
+html, body, #root {
+  margin: 0; width: 100%; height: 100%;
+  background: transparent !important;
+  overflow: hidden; user-select: none;
+  font-family: 'Segoe UI', sans-serif;
+}
+.stage { position: fixed; inset: 0; pointer-events: none; --k: .6 }
+.stage > *, .panel * { pointer-events: auto }
+.petals { position: fixed; inset: 0; pointer-events: none !important }
+.deco { position: absolute; transform: translate(-50%, -50%); }
+.deco img { width: 100%; height: auto; display: block; filter: drop-shadow(0 6px 10px rgba(0,0,0,.35)) }
+.deco.editing { outline: 2px dashed #ffd23f; cursor: move }
+
+/* ── TORAN: Realistic compact top hanging garland ────────── */
+.toran-wrap {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  pointer-events: none;
+  z-index: 100;
+  perspective: 1000px;
+}
+
+/* Garland banner: natural, realistic height (not taking up huge screen area) */
+.toran-banner {
+  position: relative;
+  width: 100%;
+  height: 64px; /* compact, natural banner height */
+  transform-origin: top center;
+  animation: garland-gentle-sway 5s ease-in-out infinite;
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.48));
+}
+
+@keyframes garland-gentle-sway {
+  0%, 100% {
+    transform: rotateX(0deg) translateY(0px);
+  }
+  35% {
+    transform: rotateX(calc(1.2deg * var(--k, 0.6))) translateY(calc(-1.5px * var(--k, 0.6)));
+  }
+  70% {
+    transform: rotateX(calc(-0.8deg * var(--k, 0.6))) translateY(calc(1px * var(--k, 0.6)));
+  }
+}
+
+/* Seamless repeating marigold garland with authentic aspect ratio */
+.toran-garland-strip {
+  width: 100%;
+  height: 100%;
+  background-repeat: repeat-x;
+  background-position: top center;
+  background-size: auto 100%; /* preserve original flower aspect ratio, no vertical stretching! */
+}
+
+/* Bottom realistic ambient occlusion / gold edge shadow */
+.toran-shadow-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, 
+    rgba(212,175,55,0.2) 0%, 
+    rgba(255,215,0,0.8) 25%, 
+    rgba(212,175,55,0.4) 50%, 
+    rgba(255,215,0,0.8) 75%, 
+    rgba(212,175,55,0.2) 100%
+  );
+  box-shadow: 0 4px 10px rgba(0,0,0,0.45);
+}
+
+/* ── Realistic Hanging Golden Bells ── */
+.toran-bells-row {
+  position: absolute;
+  top: 56px;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+}
+
+.toran-bell-hanger {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform-origin: top center;
+  animation: bell-realistic-sway 3.2s ease-in-out infinite;
+}
+
+.toran-bell-string {
+  width: 1.5px;
+  height: 18px;
+  background: linear-gradient(to bottom, #d4af37, #f3e5ab, #aa820a);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+.toran-golden-bell {
+  transform-origin: top center;
+  animation: bell-chime 4s ease-in-out infinite;
+}
+
+@keyframes bell-realistic-sway {
+  0%, 100% {
+    transform: translateX(-50%) rotate(0deg);
+  }
+  25% {
+    transform: translateX(-50%) rotate(calc(4deg * var(--k, 0.6)));
+  }
+  75% {
+    transform: translateX(-50%) rotate(calc(-4deg * var(--k, 0.6)));
+  }
+}
+
+@keyframes bell-chime {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  15% {
+    transform: rotate(6deg);
+  }
+  30% {
+    transform: rotate(-5deg);
+  }
+  45% {
+    transform: rotate(3deg);
+  }
+  60% {
+    transform: rotate(-2deg);
+  }
+  75% {
+    transform: rotate(0deg);
+  }
+}
+
+/* ── Bell ─────────────────────────────────────────────────── */
+.swing { transform-origin: top center; animation: swing 2.8s cubic-bezier(.2,.6,.3,1) 1 }
+@keyframes swing {
+  0%   { transform: rotate(0) }
+  12%  { transform: rotate(14deg) }
+  30%  { transform: rotate(-10deg) }
+  50%  { transform: rotate(6deg) }
+  72%  { transform: rotate(-3deg) }
+  100% { transform: rotate(0) }
+}
+
+/* ── Lamps ────────────────────────────────────────────────── */
+.lampwrap { position: relative; cursor: pointer; transition: filter .4s }
+.lampwrap.unlit { filter: brightness(.55) saturate(.6) }
+.lampwrap.hang.lit { animation: hang 5s ease-in-out infinite; transform-origin: top center }
+@keyframes hang {
+  50%      { transform: rotate(calc(.8deg * var(--k))) }
+  0%,100%  { transform: rotate(calc(-.8deg * var(--k))) }
+}
+.glow-flame {
+  position: absolute; left: 50%; width: 90%; aspect-ratio: 1;
+  translate: -50% -50%; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(circle, rgba(255,190,70,.55), rgba(255,140,30,.18) 45%, transparent 70%);
+  mix-blend-mode: screen;
+  animation: flicker 1.7s infinite;
+}
+@keyframes flicker {
+  0%,100% { opacity: .85; scale: 1 }
+  20%     { opacity: .6;  scale: .94 }
+  45%     { opacity: 1;   scale: 1.05 }
+  70%     { opacity: .7;  scale: .97 }
+}
+
+/* ── Tilak ────────────────────────────────────────────────── */
+
+/* ── UI Controls ──────────────────────────────────────────── */
+.fab {
+  position: absolute; right: 18px; bottom: 18px;
+  width: 44px; height: 44px; border-radius: 50%;
+  border: 2px solid #e7b94a;
+  background: #7a0b1fcc;
+  font-size: 20px; cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.fab:hover { transform: scale(1.12); box-shadow: 0 0 14px #e7b94a88 }
+
+.hint {
+  position: absolute; top: 12px; left: 50%; translate: -50% 0;
+  background: #000a; color: #ffd23f;
+  padding: 6px 14px; border-radius: 20px; font-size: 13px;
+}
+.panel {
+  position: absolute; right: 18px; bottom: 72px;
+  width: 290px; max-height: 80vh; overflow: auto;
+  background: #2a0710f2; color: #ffeec2;
+  border: 1px solid #e7b94a; border-radius: 12px;
+  padding: 12px; font-size: 13px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.panel h3 { margin: 0; color: #ffd23f }
+.panel label { display: flex; gap: 6px; align-items: center; flex-wrap: wrap }
+.panel input[type=range] { flex: 1 }
+.panel button {
+  background: #7a0b1f; color: #ffeec2;
+  border: 1px solid #e7b94a; border-radius: 6px;
+  padding: 5px 8px; cursor: pointer;
+}
+.panel button.danger { background: #a11 }
+.row { display: flex; gap: 6px; align-items: center }
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 6px }
